@@ -2,7 +2,13 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkyLine | Official</title>
+    
+    <!-- Твоя иконка вместо планеты -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta property="og:image" content="logo.png">
+
     <style>
         :root { --accent: #00e1ff; --bg: #0a0a0a; --card: #121212; --sidebar: #0d0d0d; }
         body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
@@ -11,63 +17,97 @@
 
         /* ШАПКА */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 10%; background: rgba(0,0,0,0.9); position: fixed; width: 80%; top: 0; z-index: 1000; border-bottom: 1px solid #1a1a1a; }
-        .logo { font-weight: bold; font-size: 18px; color: var(--accent); letter-spacing: 2px; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--accent); letter-spacing: 2px; }
+        .logo-img { width: 30px; height: 30px; object-fit: cover; border-radius: 5px; border: 1px solid var(--accent); }
         .nav-links a { color: #888; text-decoration: none; font-size: 14px; margin-left: 30px; transition: 0.3s; cursor: pointer; }
         .nav-links a:hover { color: var(--accent); }
 
         /* ГЛАВНАЯ */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%); }
+        .hero-logo { width: 250px; margin-bottom: 20px; border-radius: 10px; border: 1px solid var(--accent); box-shadow: 0 0 20px rgba(0, 225, 255, 0.2); }
         .hero h1 { font-size: 72px; margin: 0; font-weight: bold; }
         .btn-group { display: flex; gap: 20px; margin-top: 40px; }
         .btn-main { background: linear-gradient(90deg, var(--accent), #0088ff); color: black; padding: 15px 35px; border-radius: 30px; font-weight: bold; border: none; cursor: pointer; transition: 0.3s; }
         .btn-sec { background: #1a1a1a; color: white; padding: 15px 35px; border-radius: 30px; border: 1px solid #333; cursor: pointer; }
 
+        /* МОДАЛКА АВТОРИЗАЦИИ */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .auth-box { background: var(--card); padding: 40px; border-radius: 20px; width: 350px; border: 1px solid #222; text-align: center; }
+        .auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: #0d0d0d; border: 1px solid #333; color: white; border-radius: 8px; outline: none; }
+        .auth-box input:focus { border-color: var(--accent); }
+
         /* ОКНО ОПЛАТЫ */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 3000; }
         .pay-box { background: #111; padding: 30px; border-radius: 20px; width: 350px; border: 1px solid #222; text-align: center; }
         .pay-link-btn { display: block; background: #1a1a1a; border: 1px solid #333; color: white; padding: 18px; border-radius: 12px; cursor: pointer; margin: 10px 0; text-decoration: none; font-weight: bold; transition: 0.3s; }
         .pay-link-btn:hover { border-color: var(--accent); background: rgba(0, 225, 255, 0.05); }
 
-        /* МАГАЗИН И КАБИНЕТ */
+        /* КАБИНЕТ */
         .layout { display: flex; height: 100vh; }
         .sidebar { width: 250px; background: var(--sidebar); padding: 100px 20px 40px 20px; border-right: 1px solid #1a1a1a; }
         .nav-item { padding: 12px 15px; border-radius: 10px; margin-bottom: 5px; cursor: pointer; color: #888; }
         .nav-item.active { background: rgba(0, 225, 255, 0.1); color: var(--accent); }
         .content { flex: 1; padding: 100px 8% 60px 8%; overflow-y: auto; }
+        
         .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 20px; }
-        .product-card { background: var(--card); border-radius: 20px; border: 1px solid #222; padding: 15px; text-align: center; }
-        .buy-btn { background: var(--accent); color: black; width: 100%; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .product-card { background: var(--card); border-radius: 20px; border: 1px solid #222; overflow: hidden; text-align: center; }
+        .product-img { width: 100%; height: 120px; background: url('logo.png') no-repeat center center; background-size: cover; border-bottom: 1px solid #222; }
+        .price-text { color: var(--accent); font-size: 22px; font-weight: bold; margin: 10px 0; }
+        .buy-btn { background: var(--accent); color: black; width: 80%; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
+
+        /* ЮРИДИЧЕСКИЙ ТЕКСТ */
+        .text-section { padding: 120px 15%; line-height: 1.8; color: #ccc; }
+        .text-section h2 { color: var(--accent); }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo">SKYLINE DLC</div>
+        <div class="logo-area">
+            <img src="logo.png" class="logo-img" alt="L"> SKYLINE DLC
+        </div>
         <div class="nav-links">
             <a onclick="showPage('heroPage')">Главная</a>
-            <a onclick="showPage('cabinetPage')">Личный кабинет</a>
+            <a onclick="showPage('termsPage')">Условия</a>
+            <a onclick="showPage('policyPage')">Политика</a>
+            <a onclick="openAuth()">Личный кабинет</a>
         </div>
     </div>
 
-    <!-- ОКНО ОПЛАТЫ -->
+    <!-- АВТОРИЗАЦИЯ -->
+    <div class="modal" id="authModal">
+        <div class="auth-box">
+            <h2 id="authTitle">Авторизация</h2>
+            <input type="text" id="uNick" placeholder="Никнейм">
+            <input type="email" id="uEmail" placeholder="E-mail" style="display:none;">
+            <input type="password" id="uPass" placeholder="Пароль">
+            <input type="password" id="uPassConfirm" placeholder="Повторите пароль" style="display:none;">
+            <button class="btn-main" style="width: 100%; margin-top: 10px;" onclick="handleAuth()">ВОЙТИ</button>
+            <p id="switchText" style="font-size: 13px; color: #555; margin-top: 15px; cursor: pointer;" onclick="toggleAuthMode()">Нет аккаунта? <span style="color: var(--accent);">Зарегистрироваться</span></p>
+            <button onclick="closeAuth()" style="background:none; border:none; color:#333; margin-top:10px; cursor:pointer;">Отмена</button>
+        </div>
+    </div>
+
+    <!-- ОПЛАТА -->
     <div class="modal" id="payModal">
         <div class="pay-box">
             <h2>Оплата <span id="displayPrice" style="color:var(--accent)">0</span> Р</h2>
-            <input type="text" id="promoCode" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff; border-radius:10px;" placeholder="Промокод Special" oninput="applyPromo()">
+            <input type="text" id="promoCode" class="auth-box" style="width:100%; margin-bottom:10px; padding:10px;" placeholder="Промокод Special" oninput="applyPromo()">
             <a href="#" target="_blank" class="pay-link-btn" id="sbpLink" onclick="processPayment()">📲 Оплатить через СБП (QR)</a>
             <a href="#" target="_blank" class="pay-link-btn" id="cardLink" onclick="processPayment()">💳 Оплатить Картой</a>
-            <button onclick="closePay()" style="background:none; border:none; color:#444; margin-top:15px; cursor:pointer;">Отмена</button>
+            <button onclick="closePay()" style="background:none; border:none; color:#444; margin-top:10px; cursor:pointer;">Отмена</button>
         </div>
     </div>
 
     <!-- ГЛАВНАЯ -->
     <div id="heroPage" class="page active">
         <div class="hero">
-            <h1>SkyLine Client</h1>
-            <p style="color:#666">Лучший софт для ReallyWorld и FunTime.</p>
-            <div style="margin-top:40px;">
+            <img src="logo.png" class="hero-logo" alt="SkyLine Logo">
+            <span style="color: #444; letter-spacing: 5px;">PODDERZHIVAEM KACHESTVO</span>
+            <h1>Добро пожаловать</h1>
+            <p style="color:#888; max-width:600px;">Лучший софт для игры на ReallyWorld и FunTime.</p>
+            <div class="btn-group">
                 <button class="btn-main" id="mainDownloadBtn" onclick="downloadLauncher()">⬇ СКАЧАТЬ ЛАУНЧЕР</button>
-                <button class="btn-sec" onclick="showPage('cabinetPage')">ЛИЧНЫЙ КАБИНЕТ</button>
+                <button class="btn-sec" onclick="openAuth()">ЛИЧНЫЙ КАБИНЕТ</button>
             </div>
         </div>
     </div>
@@ -76,45 +116,82 @@
     <div id="cabinetPage" class="page">
         <div class="layout">
             <div class="sidebar">
-                <div class="nav-item active" onclick="switchTab('profile')">👤 Профиль</div>
-                <div class="nav-item" onclick="switchTab('shop')">🛒 Магазин</div>
+                <div class="nav-item active" id="btn-prof" onclick="switchTab('profile')">👤 Профиль</div>
+                <div class="nav-item" id="btn-shop" onclick="switchTab('shop')">🛒 Магазин</div>
                 <div class="nav-item" onclick="location.reload()">🏠 Выйти</div>
             </div>
             <div class="content">
                 <div id="profileTab">
                     <h1>Профиль</h1>
                     <p>Статус: <span id="subStatus" style="color:red; font-weight:bold;">НЕ ОПЛАЧЕНО</span></p>
-                    <div style="background: #111; padding: 25px; border-radius: 20px; border: 1px solid #222;">
-                        <h3>TyFridayNewZwer</h3>
-                        <p style="color:#555">teodor190813@gmail.com</p>
+                    <div style="background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid #222; display: flex; align-items: center; gap: 20px;">
+                        <!-- Аватарка из твоего лого -->
+                        <div id="avatarBox" style="width: 70px; height: 70px; background: url('logo.png') no-repeat center center; background-size: cover; border-radius: 15px; border: 1px solid var(--accent);"></div>
+                        <div><h3 id="displayNick" style="margin:0">User</h3><p id="displayEmail" style="color:#555">email@example.com</p></div>
                     </div>
                 </div>
                 <div id="shopTab" style="display: none;">
                     <h1>Магазин</h1>
                     <div class="card-grid">
-                        <div class="product-card"><h3>BETA</h3><div style="color:var(--accent)">900 Р</div><button class="buy-btn" onclick="openPay(900)">КУПИТЬ</button></div>
-                        <div class="product-card"><h3>LIFETIME</h3><div style="color:var(--accent)">500 Р</div><button class="buy-btn" onclick="openPay(500)">КУПИТЬ</button></div>
-                        <div class="product-card"><h3>1 ГОД</h3><div style="color:var(--accent)">300 Р</div><button class="buy-btn" onclick="openPay(300)">КУПИТЬ</button></div>
-                        <div class="product-card"><h3>30 ДНЕЙ</h3><div style="color:var(--accent)">100 Р</div><button class="buy-btn" onclick="openPay(100)">КУПИТЬ</button></div>
+                        <div class="product-card"><div class="product-img"></div><div class="product-info"><h3>BETA</h3><div class="price-text">900 Р</div><button class="buy-btn" onclick="openPay(900)">КУПИТЬ</button></div></div>
+                        <div class="product-card"><div class="product-img"></div><div class="product-info"><h3>LIFETIME</h3><div class="price-text">500 Р</div><button class="buy-btn" onclick="openPay(500)">КУПИТЬ</button></div></div>
+                        <div class="product-card"><div class="product-img"></div><div class="product-info"><h3>1 ГОД</h3><div class="price-text">300 Р</div><button class="buy-btn" onclick="openPay(300)">КУПИТЬ</button></div></div>
+                        <div class="product-card"><div class="product-img"></div><div class="product-info"><h3>30 ДНЕЙ</h3><div class="price-text">100 Р</div><button class="buy-btn" onclick="openPay(100)">КУПИТЬ</button></div></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- УСЛОВИЯ -->
+    <div id="termsPage" class="page">
+        <div class="text-section">
+            <h2>Условия использования</h2>
+            <p>Последнее обновление: 26 апреля 2026</p>
+            <p>1. Привязка к HWID гарантирует использование одной лицензии на одном устройстве. 2. Возврат средств возможен в течение 14 дней, если DLC не был активирован.</p>
+            <button class="btn-main" onclick="showPage('heroPage')">СОГЛАСЕН</button>
+        </div>
+    </div>
+
+    <!-- ПОЛИТИКА -->
+    <div id="policyPage" class="page">
+        <div class="text-section">
+            <h2>Политика конфиденциальности</h2>
+            <p>Мы собираем данные о вашем оборудовании только для защиты лицензии.</p>
+            <button class="btn-main" onclick="showPage('heroPage')">НАЗАД</button>
+        </div>
+    </div>
+
     <script>
-        let basePrice = 0; let isPaid = false;
-        function showPage(p) { document.querySelectorAll('.page').forEach(x => x.classList.remove('active')); document.getElementById(p).classList.add('active'); }
+        let basePrice = 0; let isPaid = false; let isRegMode = false;
+        function showPage(p) { document.querySelectorAll('.page').forEach(x => x.classList.remove('active')); document.getElementById(p).classList.add('active'); window.scrollTo(0,0); }
+        function openAuth() { document.getElementById('authModal').style.display = 'flex'; }
+        function closeAuth() { document.getElementById('authModal').style.display = 'none'; }
         function openPay(price) { basePrice = price; updateLinks(price); document.getElementById('payModal').style.display = 'flex'; }
         function closePay() { document.getElementById('payModal').style.display = 'none'; }
+
+        function toggleAuthMode() {
+            isRegMode = !isRegMode;
+            document.getElementById('uEmail').style.display = isRegMode ? "block" : "none";
+            document.getElementById('uPassConfirm').style.display = isRegMode ? "block" : "none";
+            document.getElementById('authTitle').innerText = isRegMode ? "Регистрация" : "Авторизация";
+            document.getElementById('authBtn').innerText = isRegMode ? "СОЗДАТЬ АККАУНТ" : "ВОЙТИ";
+        }
+
+        function handleAuth() {
+            const nick = document.getElementById('uNick').value;
+            if(!nick) { alert("Введите ник!"); return; }
+            document.getElementById('displayNick').innerText = nick;
+            closeAuth(); showPage('cabinetPage');
+        }
 
         function updateLinks(price) {
             document.getElementById('displayPrice').innerText = price;
             let links = {
-                900: "https://app.lava.top/products/56991bb4-28ec-41a2-8cdf-e86359be6f64", // Бета
-                500: "https://app.lava.top/products/fb8b7a92-47ab-4c0e-afab-8b0c71adf617", // Лайфтайм
-                300: "https://app.lava.top/products/ee59600b-71bf-4c68-b408-9817ba64b734", // 1 Год
-                100: "https://app.lava.top/products/d4198604-66ac-48e6-b8de-3a56638e6eb8"  // 30 Дней
+                900: "https://app.lava.top/products/56991bb4-28ec-41a2-8cdf-e86359be6f64 ",
+                500: "https://app.lava.top/products/fb8b7a92-47ab-4c0e-afab-8b0c71adf617",
+                300: "https://app.lava.top/products/ee59600b-71bf-4c68-b408-9817ba64b734",
+                100: "https://app.lava.top/products/d4198604-66ac-48e6-b8de-3a56638e6eb8"
             };
             document.getElementById('sbpLink').href = links[basePrice];
             document.getElementById('cardLink').href = links[basePrice];
@@ -126,7 +203,7 @@
         }
 
         function processPayment() {
-            alert('Перенаправляем на страницу оплаты Lava... После оплаты лаунчер разблокируется.');
+            alert('Переход к оплате Lava... После оплаты статус обновится.');
             setTimeout(() => {
                 isPaid = true;
                 document.getElementById('subStatus').innerText = "АКТИВЕН";
@@ -137,8 +214,8 @@
         }
 
         function downloadLauncher() {
-            if(isPaid) { alert('Загрузка началась!'); } 
-            else { alert('Сначала оплатите подписку!'); }
+            if(isPaid) { alert('Загрузка началась! Напиши админу в ТГ за ключом.'); }
+            else { alert('Сначала оплатите подписку!'); showPage('cabinetPage'); switchTab('shop'); }
         }
 
         function switchTab(t) {
