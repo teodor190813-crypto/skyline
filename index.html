@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkyLine | Official</title>
-    <link rel="icon" type="image/png" href="logo.png?v=2">
+    <link rel="icon" type="image/png" href="logo.png">
     <style>
         :root { --accent: #00e1ff; --bg: #0a0a0a; --card: #121212; --sidebar: #0d0d0d; --gold: #ffcc00; }
         body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; transition: filter 0.8s ease; }
+        
+        /* СИСТЕМА СТРАНИЦ */
         .page { display: none; }
         .page.active { display: block; }
 
@@ -19,10 +21,10 @@
         .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 10%; background: rgba(0,0,0,0.9); position: fixed; width: 80%; top: 0; z-index: 1000; border-bottom: 1px solid #1a1a1a; backdrop-filter: blur(10px); }
         .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--accent); letter-spacing: 2px; cursor: pointer; }
         .logo-img { width: 30px; height: 30px; border-radius: 5px; border: 1px solid var(--accent); object-fit: cover; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 14px; margin-left: 30px; cursor: pointer; transition: 0.3s; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; margin-left: 30px; transition: 0.3s; cursor: pointer; }
         .nav-links a:hover { color: var(--accent); }
 
-        /* ГЛАВНАЯ */
+        /* ГЛАВНАЯ СЕКЦИЯ */
         .hero { 
             height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
             background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
@@ -30,17 +32,22 @@
         }
         .hero h1 { font-size: 72px; margin: 10px 0; font-weight: bold; text-shadow: 0 0 20px rgba(0,0,0,0.8); }
         .btn-group { display: flex; gap: 20px; margin-top: 40px; z-index: 10; flex-wrap: wrap; justify-content: center; }
+        
+        /* КНОПКИ ГЛАВНОЙ */
         .btn-main { background: linear-gradient(90deg, var(--accent), #0088ff); color: black; padding: 15px 35px; border-radius: 30px; font-weight: bold; border: none; cursor: pointer; transition: 0.3s; }
         .btn-beta { background: #fff; color: black; padding: 15px 35px; border-radius: 30px; font-weight: bold; border: 2px solid var(--accent); cursor: pointer; transition: 0.3s; }
         .btn-beta:hover { box-shadow: 0 0 25px #fff; transform: scale(1.05); }
+        .btn-sec { background: #1a1a1a; color: white; padding: 15px 35px; border-radius: 30px; border: 1px solid #333; cursor: pointer; }
 
         /* СТАТИСТИКА */
         .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1100px; margin: -50px auto 50px auto; padding: 0 20px; position: relative; z-index: 2; }
         .stat-card { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid #1a1a1a; text-align: center; transition: 0.3s; }
         .stat-value { font-size: 28px; font-weight: bold; color: var(--accent); display: block; }
+        .stat-label { font-size: 12px; color: #555; text-transform: uppercase; margin-top: 5px; }
 
         /* ПРЕИМУЩЕСТВА */
         .section-container { max-width: 1100px; margin: 0 auto; padding: 100px 20px; }
+        .section-header h2 { font-size: 42px; margin: 0; font-weight: bold; text-align: center; }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
         .f-card { position: relative; background: var(--card); padding: 40px 30px; border-radius: 25px; border: 1px solid #1a1a1a; text-align: left; transition: 0.4s; overflow: hidden; }
         .f-card:hover { border-color: var(--accent); transform: translateY(-5px); }
@@ -50,44 +57,49 @@
         .snow-pile { position: absolute; top: -8px; left: 0; right: 0; height: 14px; background: white; border-radius: 20px 20px 0 0; filter: blur(1px); display: none; box-shadow: 0 2px 15px white; }
         .snow-active .snow-pile { display: block; }
 
-        /* МАГАЗИН */
+        /* МАГАЗИН И ЭФФЕКТ ПЕРЕЛИВА */
         .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 20px; }
-        .product-card { position: relative; background: var(--card); border-radius: 25px; border: 1px solid #1a1a1a; text-align: center; padding: 30px 15px 25px 15px; transition: 0.4s; overflow: hidden; }
-        .product-card:hover { border-color: #fff; box-shadow: 0 0 30px rgba(0, 225, 255, 0.2); transform: translateY(-7px); }
+        .product-card { position: relative; background: var(--card); border-radius: 25px; border: 1px solid #1a1a1a; text-align: center; padding: 30px 15px 25px 15px; transition: 0.4s; overflow: hidden; box-shadow: 0 0 15px rgba(0, 225, 255, 0.1); }
+        .product-card:hover { border-color: #fff; box-shadow: 0 0 30px rgba(0, 225, 255, 0.3); transform: translateY(-7px); }
         .price-text { color: var(--accent); font-size: 24px; font-weight: bold; margin: 15px 0; }
+        
         .buy-btn { background: var(--accent); color: black; width: 85%; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.4s; }
         .buy-btn:hover { background: #ffffff; color: #000; box-shadow: 0 0 25px #fff; }
 
-        /* КАБИНЕТ */
+        /* ЛИЧНЫЙ КАБИНЕТ */
         .layout { display: flex; height: 100vh; }
         .sidebar { width: 260px; background: var(--sidebar); padding: 110px 20px 40px 20px; border-right: 1px solid #1a1a1a; }
         .nav-item { padding: 14px 18px; border-radius: 12px; margin-bottom: 8px; cursor: pointer; color: #888; transition: 0.3s; font-size: 14px; }
+        .nav-item:hover { background: #1a1a1a; color: white; }
         .nav-item.active { background: rgba(0, 225, 255, 0.1); color: var(--accent); font-weight: bold; }
         .nav-item.cfg-active { background: rgba(255, 204, 0, 0.1); color: var(--gold); font-weight: bold; }
         .content { flex: 1; padding: 110px 8% 60px 8%; overflow-y: auto; }
 
         /* АВАТАРКА */
-        .avatar-container { position: relative; width: 80px; height: 80px; cursor: pointer; }
+        .avatar-container { position: relative; width: 80px; height: 80px; cursor: pointer; margin-bottom: 10px; }
         .avatar-main { width: 100%; height: 100%; background: url('logo.png') center/cover; border-radius: 20px; border: 2px solid var(--accent); transition: 0.3s; }
         .avatar-container:hover .avatar-main { filter: brightness(0.5); }
         .avatar-container::after { content: '✎'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0; transition: 0.3s; font-size: 24px; color: white; }
         .avatar-container:hover::after { opacity: 1; }
 
-        /* МОДАЛКА */
+        /* МОДАЛКА ВХОДА */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); display: none; align-items: center; justify-content: center; z-index: 3000; }
         .auth-box { background: var(--card); padding: 40px; border-radius: 30px; width: 360px; border: 1px solid #222; text-align: center; }
         .auth-box input { width: 100%; padding: 14px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 12px; outline: none; box-sizing: border-box; }
         
-        /* ЮРИДИЧЕСКОЕ */
-        .text-section { padding: 130px 15% 80px 15%; line-height: 1.8; color: #aaa; }
+        /* КЛЮЧИ */
+        .key-section { background: var(--card); padding: 30px; border-radius: 25px; border: 1px solid #1a1a1a; margin-top: 30px; text-align: left; }
+        .key-input { background: #000; border: 1px solid #333; padding: 15px; border-radius: 12px; color: white; width: 100%; outline: none; box-sizing: border-box; margin-top: 10px; }
     </style>
 </head>
-<body id="main-body">
+<body id="main-body" onclick="unlockAudio()">
 
     <canvas id="effect-canvas"></canvas>
+    <audio id="main-audio" loop preload="auto"></audio>
 
+    <!-- ШАПКА -->
     <div class="header">
-        <div class="logo-area" onclick="showPage('heroPage')"><img src="logo.png?v=2" class="logo-img"> SKYLINE</div>
+        <div class="logo-area" onclick="showPage('heroPage')"><img src="logo.png" class="logo-img"> SKYLINE</div>
         <div class="nav-links">
             <a onclick="showPage('heroPage')">Главная</a>
             <a onclick="openAuth(); switchTab('shop')">Магазин</a>
@@ -95,34 +107,33 @@
         </div>
     </div>
 
-    <!-- ГЛАВНАЯ -->
+    <!-- ГЛАВНАЯ СТРАНИЦА -->
     <div id="heroPage" class="page active">
         <div class="hero" id="main-hero">
-            <img src="logo.png?v=2" style="width:150px; margin-bottom:20px; filter: drop-shadow(0 0 20px var(--accent));">
+            <img src="logo.png" style="width:150px; margin-bottom:20px; filter: drop-shadow(0 0 20px var(--accent));">
             <h1>SkyLine DLC</h1>
             <p style="color:#666;">Лучшее решение для ReallyWorld и FunTime.</p>
             <div class="btn-group">
                 <button class="btn-main" onclick="tryDownload('std')">⬇ СКАЧАТЬ</button>
                 <button class="btn-beta" onclick="tryDownload('beta')">⭐ СКАЧАТЬ BETA</button>
-                <button class="btn-sec" onclick="openAuth()">ЛИЧНЫЙ КАБИНЕТ</button>
+                <button class="btn-beta" style="background:#1a1a1a; color:white; border-color:#333" onclick="openAuth()">ЛИЧНЫЙ КАБИНЕТ</button>
             </div>
         </div>
 
+        <!-- СТАТИСТИКА -->
         <div class="stats-container">
-            <div class="stat-card"><span class="stat-value" id="userCount">0</span><span>Юзеров</span></div>
-            <div class="stat-card"><span class="stat-value" id="launchCount">0</span><span>Запусков</span></div>
-            <div class="stat-card"><span class="stat-value" id="uptime">0д 0ч 0м</span><span>В сети</span></div>
+            <div class="stat-card"><span class="stat-value" id="userCount">0</span><span class="stat-label">Юзеров</span></div>
+            <div class="stat-card"><span class="stat-value" id="launchCount">0</span><span class="stat-label">Запусков</span></div>
+            <div class="stat-card"><span class="stat-value" id="uptime">0д 0ч 0м</span><span class="stat-label">В сети</span></div>
         </div>
 
+        <!-- ПРЕИМУЩЕСТВА -->
         <div class="section-container">
-            <h2 style="text-align: center;">Наши преимущества</h2>
+            <h2 style="text-align: center; margin-bottom: 50px;">Наши преимущества</h2>
             <div class="features-grid">
                 <div class="f-card"><div class="snow-pile"></div><i>👁</i><h3>Визуалы</h3><p>Уникальные рендеры и плавная анимация интерфейса.</p></div>
                 <div class="f-card"><div class="snow-pile"></div><i>🚀</i><h3>Оптимизация</h3><p>Максимальный FPS даже на самых слабых ПК.</p></div>
                 <div class="f-card"><div class="snow-pile"></div><i>⚙</i><h3>Конфиги</h3><p>Гибкая настройка под любой сервер и стиль игры.</p></div>
-            </div>
-            <div style="margin-top:50px; height:400px; background:#0d0d0d; border-radius:30px; border:1px solid #1a1a1a; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-                <img src="logo.png" style="opacity:0.1; width:200px;">
             </div>
         </div>
     </div>
@@ -138,20 +149,22 @@
             </div>
             <div class="content">
                 
+                <!-- ВКЛАДКА ПРОФИЛЬ -->
                 <div id="profileTab">
                     <h1>Профиль</h1>
-                    <div style="background: var(--card); padding: 35px; border-radius: 20px; border: 1px solid #222; display: flex; align-items: center; gap: 25px; margin-top:20px;">
+                    <div style="background: var(--card); padding: 35px; border-radius: 20px; border: 1px solid #222; display: flex; align-items: center; gap: 25px;">
                         <div class="avatar-container" onclick="document.getElementById('avatarInput').click()">
                             <div id="userAvatar" class="avatar-main"></div>
                         </div>
                         <input type="file" id="avatarInput" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
                         <div>
                             <h3 id="displayNick">User</h3>
-                            <p id="subTxt" style="color:red; font-weight:bold; font-size: 13px;">ЛИЦЕНЗИЯ: НЕ ОПЛАЧЕНО</p>
+                            <p id="subTxt" style="color:red; font-weight:bold;">ЛИЦЕНЗИЯ: НЕ ОПЛАЧЕНО</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- ВКЛАДКА МАГАЗИН -->
                 <div id="shopTab" style="display:none;">
                     <h1>Магазин</h1>
                     <div class="card-grid">
@@ -161,41 +174,56 @@
                         <div class="product-card"><div class="snow-pile"></div><h3>30 ДНЕЙ</h3><div class="price-text">100 Р</div><button class="buy-btn" onclick="window.open('https://lava.top')">КУПИТЬ</button></div>
                         <div class="product-card" style="border-color:var(--gold)"><div class="snow-pile"></div><h3>CFG Specialist</h3><div class="price-text" style="color:var(--gold)">150 Р</div><button class="buy-btn" onclick="window.open('https://lava.top')">КУПИТЬ</button></div>
                     </div>
-                    <div style="background:var(--card); padding:25px; border-radius:20px; border:1px solid #1a1a1a; margin-top:30px;">
-                        <h3>🔑 Активировать ключ</h3>
-                        <input type="text" id="licenseKey" style="width:100%; background:#000; border:1px solid #333; padding:12px; border-radius:10px; color:white; margin:10px 0;" placeholder="Sky-XXXXX-lineXX">
-                        <button class="btn-main" onclick="activateKey()">АКТИВИРОВАТЬ</button>
+                    <div class="key-section">
+                        <h3>🔑 Активировать лицензионный ключ</h3>
+                        <input type="text" id="licenseKey" class="key-input" placeholder="Sky-XXXXX-lineXX">
+                        <button class="btn-main" style="margin-top:15px; border-radius:12px;" onclick="activateKey()">АКТИВИРОВАТЬ</button>
                     </div>
                 </div>
 
+                <!-- ВКЛАДКА ТЕМЫ -->
                 <div id="settingsTab" style="display:none;">
                     <h1>Настройки атмосферы</h1>
+                    <h3>Визуальные эффекты</h3>
                     <button class="btn-main" onclick="setEffect('none')">Выключить</button>
                     <button class="btn-main" onclick="setEffect('rain')">🌧 Дождь</button>
                     <button class="btn-main" onclick="setEffect('snow')">❄ Снег</button>
+                    <h3 style="margin-top:30px;">Музыка</h3>
+                    <button class="btn-beta" onclick="playMusic('jingle')">Jingle Bells</button>
+                    <button class="btn-beta" onclick="playMusic('venus')">Mice on Venus</button>
+                    <button class="btn-beta" onclick="playMusic('down')">Fallen Down</button>
+                    <button class="btn-beta" onclick="playMusic('stop')">Выключить</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- МОДАЛКИ -->
-    <div id="authModal" class="modal">
+    <!-- МОДАЛКА ВХОДА -->
+    <div class="modal" id="authModal">
         <div class="auth-box">
             <h2 id="authTitle">Авторизация</h2>
             <div id="regOnly" style="display:none;"><input type="email" id="uEmail" placeholder="Email"></div>
             <input type="text" id="uNick" placeholder="Никнейм">
             <input type="password" id="uPass" placeholder="Пароль">
-            <div id="regConfirm" style="display:none;"><input type="password" id="uPassC" placeholder="Повторите пароль"></div>
+            <div id="regConfirm" style="display:none;"><input type="password" id="uPassC" placeholder="Повторите"></div>
             <button class="btn-main" style="width:100%; margin-top:15px;" onclick="handleAuth()">ПРОДОЛЖИТЬ</button>
             <p onclick="toggleAuth()" style="font-size:12px; color:#555; margin-top:15px; cursor:pointer;">Регистрация / Вход</p>
-            <button onclick="closeAuth()" style="background:none; border:none; color:#333; margin-top:10px; cursor:pointer;">Отмена</button>
         </div>
     </div>
 
     <script>
-        let isReg = false, hasBeta = false, hasStd = false, launches = 0, users = 0, currentEffect = 'none';
-        const canvas = document.getElementById('effect-canvas'), ctx = canvas.getContext('2d'), start = new Date();
+        let isReg = false, hasBeta = false, hasStd = false, currentEffect = 'none', launches = 0, users = 0, audioUnlocked = false;
+        const canvas = document.getElementById('effect-canvas'), ctx = canvas.getContext('2d'), audio = document.getElementById('main-audio'), start = new Date();
         let particles = [];
+
+        const tracks = {
+            jingle: "https://soundhelix.com",
+            venus: "https://freemusicarchive.org",
+            down: "https://freemusicarchive.org"
+        };
+
+        function unlockAudio() { audioUnlocked = true; }
+        function playMusic(t) { if(!audioUnlocked) alert("Кликните по сайту!"); if(t==='stop') audio.pause(); else { audio.src=tracks[t]; audio.play(); } }
 
         function loadAvatar(e) { const f = e.target.files[0]; if(f) { const r = new FileReader(); r.onload = (ev) => { localStorage.setItem('av', ev.target.result); document.getElementById('userAvatar').style.backgroundImage = `url('${ev.target.result}')`; }; r.readAsDataURL(f); } }
         window.onload = () => { const s = localStorage.getItem('av'); if(s) document.getElementById('userAvatar').style.backgroundImage = `url('${s}')`; };
@@ -229,11 +257,13 @@
             alert("Ключ активирован!");
         }
 
-        function tryDownload(t) {
-            if((t==='beta'&&hasBeta) || (t==='std'&&hasStd)) { launches++; updateStats(); alert("Загрузка..."); }
-            else { alert("Сначала активируйте лицензию!"); showPage('cabinetPage'); switchTab('shop'); }
-        }
+        function tryDownload(t) { if((t==='beta'&&hasBeta) || (t==='std'&&hasStd)) { launches++; updateStats(); alert("Загрузка..."); } else { alert("Купите лицензию!"); showPage('cabinetPage'); switchTab('shop'); } }
 
+        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+        function openAuth() { document.getElementById('authModal').style.display = 'flex'; }
+        function closeAuth() { document.getElementById('authModal').style.display = 'none'; }
+        function toggleAuth() { isReg = !isReg; document.getElementById('regOnly').style.display = isReg ? 'block' : 'none'; document.getElementById('regConfirm').style.display = isReg ? 'block' : 'none'; }
+        
         function handleAuth() {
             const n = document.getElementById('uNick').value, p = document.getElementById('uPass').value;
             if(!n || !p) return alert("Поля!");
@@ -249,11 +279,6 @@
             document.getElementById('uptime').innerText = `0д ${Math.floor(d/3600000)}ч ${Math.floor((d%3600000)/60000)}м`;
         }
 
-        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
-        function openAuth() { document.getElementById('authModal').style.display = 'flex'; }
-        function closeAuth() { document.getElementById('authModal').style.display = 'none'; }
-        function toggleAuth() { isReg = !isReg; document.getElementById('regOnly').style.display = isReg ? 'block' : 'none'; document.getElementById('regConfirm').style.display = isReg ? 'block' : 'none'; }
-        
         function switchTab(t) {
             ['profileTab','shopTab','settingsTab'].forEach(id => document.getElementById(id).style.display = 'none');
             document.getElementById(t+'Tab').style.display = 'block';
