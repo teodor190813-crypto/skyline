@@ -112,10 +112,10 @@
         <div class="hero" id="main-hero">
             <img src="logo.png" style="width:150px; margin-bottom:20px; filter: drop-shadow(0 0 20px var(--accent));">
             <h1>SkyLine DLC</h1>
-            <p style="color:#666;">Лучшее решение для ReallyWorld и FunTime.</p>
+            <p style="color:#666;">Лучшее решение для ReallyWorld и FunTime и других серверов.</p>
             <div class="btn-group">
                 <button class="btn-main" onclick="tryDownload('std')">⬇ СКАЧАТЬ</button>
-                <button class="btn-beta" onclick="tryDownload('beta')">⭐ СКАЧАТЬ BETA</button>
+                <button class="btn-beta" onclick="tryDownload('beta')"> СКАЧАТЬ BETA</button>
                 <button class="btn-beta" style="background:#1a1a1a; color:white; border-color:#333" onclick="openAuth()">ЛИЧНЫЙ КАБИНЕТ</button>
             </div>
         </div>
@@ -131,7 +131,7 @@
         <div class="section-container">
             <h2 style="text-align: center; margin-bottom: 50px;">Наши преимущества</h2>
             <div class="features-grid">
-                <div class="f-card"><div class="snow-pile"></div><i>👁</i><h3>Визуалы</h3><p>Уникальные рендеры и плавная анимация интерфейса.</p></div>
+                <div class="f-card"><div class="snow-pile"></div><i>👁</i><h3>Визуалы</h3><p>Уникальные рендеры и плавная анимация интерфейса что делает ваш игровой опыт еще ярче.</p></div>
                 <div class="f-card"><div class="snow-pile"></div><i>🚀</i><h3>Оптимизация</h3><p>Максимальный FPS даже на самых слабых ПК.</p></div>
                 <div class="f-card"><div class="snow-pile"></div><i>⚙</i><h3>Конфиги</h3><p>Гибкая настройка под любой сервер и стиль игры.</p></div>
             </div>
@@ -144,7 +144,7 @@
             <div class="sidebar">
                 <div class="nav-item active" id="btn-profile" onclick="switchTab('profile')">👤 Профиль</div>
                 <div class="nav-item" id="btn-shop" onclick="switchTab('shop')">🛒 Магазин</div>
-                <div class="nav-item" id="btn-settings" onclick="switchTab('settings')">✨ Атмосфера</div>
+                <div class="nav-item" id="btn-settings" onclick="switchTab('settings')"> Атмосфера</div>
                 <div class="nav-item" onclick="location.reload()">🏠 Выйти</div>
             </div>
             <div class="content">
@@ -159,7 +159,7 @@
                         <input type="file" id="avatarInput" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
                         <div>
                             <h3 id="displayNick">User</h3>
-                            <p id="subTxt" style="color:red; font-weight:bold;">ЛИЦЕНЗИЯ: НЕ ОПЛАЧЕНО</p>
+                            <p id="subTxt" style="color:white; font-weight:bold;">ЛИЦЕНЗИЯ: НЕ ОПЛАЧЕНО</p>
                         </div>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
                         <div class="product-card" style="border-color:var(--gold)"><div class="snow-pile"></div><h3>CFG Specialist</h3><div class="price-text" style="color:var(--gold)">200 ₽</div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/07ba109a-054a-43d0-b13b-04214a052a2f')">КУПИТЬ</button></div>
                     </div>
                     <div class="key-section">
-                        <h3>🔑 Активировать лицензионный ключ</h3>
+                        <h3> Активировать лицензионный ключ</h3>
                         <input type="text" id="licenseKey" class="key-input" placeholder="Sky-XXXXX-lineXX">
                         <button class="btn-main" style="margin-top:15px; border-radius:12px;" onclick="activateKey()">АКТИВИРОВАТЬ</button>
                     </div>
@@ -188,12 +188,7 @@
                     <button class="btn-main" onclick="setEffect('none')">Выключить</button>
                     <button class="btn-main" onclick="setEffect('rain')">🌧 Дождь</button>
                     <button class="btn-main" onclick="setEffect('snow')">❄ Снег</button>
-                    <h3 style="margin-top:30px;">Музыка</h3>
-                    <button class="btn-beta" onclick="playMusic('jingle')">Jingle Bells</button>
-                    <button class="btn-beta" onclick="playMusic('venus')">Mice on Venus</button>
-                    <button class="btn-beta" onclick="playMusic('down')">Fallen Down</button>
-                    <button class="btn-beta" onclick="playMusic('stop')">Выключить</button>
-                </div>
+        
             </div>
         </div>
     </div>
