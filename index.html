@@ -112,17 +112,17 @@
         <div class="hero" id="main-hero">
             <img src="logo.png" style="width:150px; margin-bottom:20px; filter: drop-shadow(0 0 20px var(--accent));">
             <h1>SkyLine DLC</h1>
-            <p style="color:#666;">Лучшее решение для ReallyWorld и FunTime и других серверов.</p>
+            <p style="color:#666;">Лучшее решение для ReallyWorld и FunTime.</p>
             <div class="btn-group">
                 <button class="btn-main" onclick="tryDownload('std')">⬇ СКАЧАТЬ</button>
-                <button class="btn-beta" onclick="tryDownload('beta')"> СКАЧАТЬ BETA</button>
+                <button class="btn-beta" onclick="tryDownload('beta')">⭐ СКАЧАТЬ BETA</button>
                 <button class="btn-beta" style="background:#1a1a1a; color:white; border-color:#333" onclick="openAuth()">ЛИЧНЫЙ КАБИНЕТ</button>
             </div>
         </div>
 
         <!-- СТАТИСТИКА -->
         <div class="stats-container">
-            <div class="stat-card"><span class="stat-value" id="userCount">0</span><span class="stat-label">Пользователей</span></div>
+            <div class="stat-card"><span class="stat-value" id="userCount">0</span><span class="stat-label">Юзеров</span></div>
             <div class="stat-card"><span class="stat-value" id="launchCount">0</span><span class="stat-label">Запусков</span></div>
             <div class="stat-card"><span class="stat-value" id="uptime">0д 0ч 0м</span><span class="stat-label">В сети</span></div>
         </div>
@@ -131,7 +131,7 @@
         <div class="section-container">
             <h2 style="text-align: center; margin-bottom: 50px;">Наши преимущества</h2>
             <div class="features-grid">
-                <div class="f-card"><div class="snow-pile"></div><i>👁</i><h3>Визуалы</h3><p>Уникальные рендеры и плавная анимация интерфейса что делает ваш игровой опыт еще ярче.</p></div>
+                <div class="f-card"><div class="snow-pile"></div><i>👁</i><h3>Визуалы</h3><p>Уникальные рендеры и плавная анимация интерфейса.</p></div>
                 <div class="f-card"><div class="snow-pile"></div><i>🚀</i><h3>Оптимизация</h3><p>Максимальный FPS даже на самых слабых ПК.</p></div>
                 <div class="f-card"><div class="snow-pile"></div><i>⚙</i><h3>Конфиги</h3><p>Гибкая настройка под любой сервер и стиль игры.</p></div>
             </div>
@@ -144,7 +144,7 @@
             <div class="sidebar">
                 <div class="nav-item active" id="btn-profile" onclick="switchTab('profile')">👤 Профиль</div>
                 <div class="nav-item" id="btn-shop" onclick="switchTab('shop')">🛒 Магазин</div>
-                <div class="nav-item" id="btn-settings" onclick="switchTab('settings')"> Атмосфера</div>
+                <div class="nav-item" id="btn-settings" onclick="switchTab('settings')">✨ Атмосфера</div>
                 <div class="nav-item" onclick="location.reload()">🏠 Выйти</div>
             </div>
             <div class="content">
@@ -159,23 +159,23 @@
                         <input type="file" id="avatarInput" style="display:none;" accept="image/*" onchange="loadAvatar(event)">
                         <div>
                             <h3 id="displayNick">User</h3>
-                            <p id="subTxt" style="color:white; font-weight:bold;">ЛИЦЕНЗИЯ: НЕ ОПЛАЧЕНО</p>
+                            <p id="subTxt" style="color:red; font-weight:bold;">ЛИЦЕНЗИЯ: НЕ ОПЛАЧЕНО</p>
                         </div>
                     </div>
-        
+                </div>
 
                 <!-- ВКЛАДКА МАГАЗИН -->
                 <div id="shopTab" style="display:none;">
                     <h1>Магазин</h1>
                     <div class="card-grid">
-                        <div class="product-card"><div class="snow-pile"></div><h3>BETA</h3><div class="price-text">900 ₽</div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/56991bb4-28ec-41a2-8cdf-e86359be6f64')">КУПИТЬ</button></div>
-                        <div class="product-card"><div class="snow-pile"></div><h3>LIFETIME</h3><div class="price-text">500 ₽</div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/fb8b7a92-47ab-4c0e-afab-8b0c71adf617')">КУПИТЬ</button></div>
-                        <div class="product-card"><div class="snow-pile"></div><h3>1 ГОД</h3><div class="price-text">300 ₽</div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/ee59600b-71bf-4c68-b408-9817ba64b734')">КУПИТЬ</button></div>
-                        <div class="product-card"><div class="snow-pile"></div><h3>30 ДНЕЙ</h3><div class="price-text">100 ₽</div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/d4198604-66ac-48e6-b8de-3a56638e6eb8')">КУПИТЬ</button></div>d4198604-66ac-48e6-b8de-3a56638e6eb8
-                        <div class="product-card" style="border-color:var(--gold)"><div class="snow-pile"></div><h3>CFG Specialist</h3><div class="price-text" style="color:var(--gold)">200 ₽</div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/07ba109a-054a-43d0-b13b-04214a052a2f')">КУПИТЬ</button></div>
+                        <div class="product-card"><div class="snow-pile"></div><h3>BETA</h3><div class="price-text">900 ₽ </div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/56991bb4-28ec-41a2-8cdf-e86359be6f64')">КУПИТЬ</button></div>
+                        <div class="product-card"><div class="snow-pile"></div><h3>LIFETIME</h3><div class="price-text">500 ₽ </div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/fb8b7a92-47ab-4c0e-afab-8b0c71adf617')">КУПИТЬ</button></div>
+                        <div class="product-card"><div class="snow-pile"></div><h3>1 ГОД</h3><div class="price-text">300 ₽ </div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/ee59600b-71bf-4c68-b408-9817ba64b734')">КУПИТЬ</button></div>
+                        <div class="product-card"><div class="snow-pile"></div><h3>30 ДНЕЙ</h3><div class="price-text">100 ₽ </div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/d4198604-66ac-48e6-b8de-3a56638e6eb8')">КУПИТЬ</button></div>
+                        <div class="product-card" style="border-color:var(--gold)"><div class="snow-pile"></div><h3>CFG Specialist</h3><div class="price-text" style="color:var(--gold)">150 Р</div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/07ba109a-054a-43d0-b13b-04214a052a2f')">КУПИТЬ</button></div>
                     </div>
                     <div class="key-section">
-                        <h3> Активировать лицензионный ключ</h3>
+                        <h3>🔑 Активировать лицензионный ключ</h3>
                         <input type="text" id="licenseKey" class="key-input" placeholder="Sky-XXXXX-lineXX">
                         <button class="btn-main" style="margin-top:15px; border-radius:12px;" onclick="activateKey()">АКТИВИРОВАТЬ</button>
                     </div>
@@ -188,9 +188,15 @@
                     <button class="btn-main" onclick="setEffect('none')">Выключить</button>
                     <button class="btn-main" onclick="setEffect('rain')">🌧 Дождь</button>
                     <button class="btn-main" onclick="setEffect('snow')">❄ Снег</button>
-        
+                    <h3 style="margin-top:30px;">Музыка</h3>
+                    <button class="btn-beta" onclick="playMusic('jingle')">Jingle Bells не работает </button>
+                    <button class="btn-beta" onclick="playMusic('venus')">Mice on Venus не работает</button>
+                    <button class="btn-beta" onclick="playMusic('down')">Fallen Down не работает</button>
+                    <button class="btn-beta" onclick="playMusic('stop')">Выключить не работает</button>
+                </div>
             </div>
-        </div> 
+        </div>
+    </div>
 
     <!-- МОДАЛКА ВХОДА -->
     <div class="modal" id="authModal">
