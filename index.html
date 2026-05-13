@@ -3,238 +3,585 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyLine | Official</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <title>SkyLine Client — Premium Minecraft Software</title>
     <style>
-        :root { --accent: #ff4d4d; --blue: #00e1ff; --bg: #0a0a0a; --card: #121212; --sidebar: #0d0d0d; --gold: #ffcc00; --green: #00ff88; }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; transition: filter 0.8s ease; }
-        .page { display: none; }
-        .page.active { display: block; }
-        #effect-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998; }
-        .rain-mode { filter: brightness(0.6) contrast(1.1); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #060609;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Навигационная панель */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 80px;
+            background: rgba(6, 6, 9, 0.85);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #b55fe6, #6b5fe6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            color: #a0a0b0;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 15px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active { color: #ffffff; }
+
+        .nav-btn {
+            background: #12121f;
+            padding: 10px 22px;
+            border-radius: 8px;
+            color: #ffffff;
+            text-decoration: none;
+            border: 1px solid #2d2d42;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #6b5fe6;
+            border-color: #6b5fe6;
+            box-shadow: 0 0 15px rgba(107, 95, 230, 0.4);
+        }
+
+        main {
+            flex-grow: 1;
+            margin-top: 80px;
+        }
+
+        .page-section {
+            display: none;
+            min-height: calc(100vh - 80px);
+            width: 100%;
+        }
+
+        .page-section.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- ГЛАВНАЯ СТРАНИЦА --- */
+        .hero-section {
+            height: calc(100vh - 80px);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(6,6,9,0.2), #060609), url('bg.png') no-repeat center center/cover;
+            padding: 0 20px;
+        }
+
+        .hero-section h1 {
+            font-size: 84px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 25px;
+            background: linear-gradient(to bottom, #ffffff, #a0a0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-section p {
+            font-size: 19px;
+            color: #8a8a9e;
+            max-width: 650px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, #6b5fe6, #b55fe6);
+            color: white;
+            padding: 18px 44px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 0 30px rgba(107, 95, 230, 0.5);
+            transition: 0.4s ease;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 45px rgba(107, 95, 230, 0.8);
+            background: linear-gradient(45deg, #5a4ed1, #a14cd1);
+        }
+
+        .features-section { padding: 100px 40px; background: #060609; width: 100%; text-align: center; }
+        .features-section h2 { font-size: 36px; margin-bottom: 40px; font-weight: 800; }
+        .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; text-align: left; }
+        .feat-box { background: #0c0c14; border: 1px solid #1f1f33; border-radius: 12px; padding: 30px; }
+        .feat-box h4 { margin-bottom: 10px; font-size: 19px; font-weight: 700; }
+        .feat-box p { color: #a0a0b0; font-size: 14px; line-height: 1.6; }
+
+        /* --- СЕКЦИЯ МАГАЗИНА --- */
+        #shop-page {
+            padding: 60px 40px;
+            align-items: center;
+        }
+        #shop-page h2 { font-size: 36px; margin-bottom: 40px; font-weight: 800; text-align: center; }
+        .shop-grid { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 1200px; margin: 0 auto; width: 100%; }
         
-        /* ШАПКА */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 10%; background: rgba(0,0,0,0.9); position: fixed; width: 80%; top: 0; z-index: 1000; border-bottom: 1px solid #1a1a1a; backdrop-filter: blur(10px); }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--blue); letter-spacing: 2px; cursor: pointer; }
-        .logo-img { width: 30px; height: 30px; border-radius: 5px; border: 1px solid var(--blue); object-fit: cover; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 13px; margin-left: 25px; cursor: pointer; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
-
-        /* ГЛАВНАЯ */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%); background-size: cover; background-position: center; transition: 1s ease; position: relative; }
-        .hero h1 { font-size: 72px; margin: 10px 0; font-weight: bold; }
-        .btn-group { display: flex; gap: 20px; margin-top: 40px; z-index: 10; flex-wrap: wrap; justify-content: center; }
-        .btn-main { background: var(--accent); color: white; padding: 15px 35px; border-radius: 30px; font-weight: bold; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(255, 77, 77, 0.4); }
-        .btn-beta { background: #fff; color: black; padding: 15px 35px; border-radius: 30px; font-weight: bold; border: none; cursor: pointer; transition: 0.3s; }
-
-        /* МАГАЗИН */
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 20px; }
-        .product-card { position: relative; background: var(--card); border-radius: 25px; border: 1px solid #1a1a1a; text-align: center; padding: 30px 15px; transition: 0.4s; overflow: hidden; }
-        .product-card:hover { border-color: var(--red; transform: translateY(-7px); }
-        .price-text { color: var(--red); font-size: 22px; font-weight: bold; margin: 10px 0; }
-        .buy-btn { background: var(--red); color: black; width: 90%; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-
-        .snow-pile { position: absolute; top: -8px; left: 0; right: 0; height: 14px; background: white; border-radius: 20px 20px 0 0; filter: blur(1px); display: none; box-shadow: 0 2px 15px white; }
-        .snow-active .snow-pile { display: block; }
-
-        /* КАБИНЕТ */
-        .layout { display: flex; height: 100vh; }
-        .sidebar { width: 260px; background: #0d0d0d; padding: 110px 20px 40px 20px; border-right: 1px solid #1a1a1a; }
-        .nav-item { padding: 14px 18px; border-radius: 12px; margin-bottom: 8px; cursor: pointer; color: #888; transition: 0.3s; font-size: 14px; }
-        .nav-item.active { background: rgba(0, 225, 255, 0.1); color: var(--blue); font-weight: bold; }
-        .content { flex: 1; padding: 110px 8% 60px 8%; overflow-y: auto; }
+        .shop-card {
+            background: #0c0c14;
+            border: 1px solid #1f1f33;
+            border-radius: 12px;
+            padding: 30px 25px;
+            width: 270px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            transition: 0.3s;
+        }
+        .shop-card:hover { border-color: #6b5fe6; transform: translateY(-5px); }
+        .shop-card h4 { font-size: 20px; font-weight: 700; }
+        .shop-card .price { font-size: 36px; font-weight: 800; margin: 15px 0; color: #fff; }
+        .shop-card .desc { font-size: 13.5px; color: #a0a0b0; margin-bottom: 25px; flex-grow: 1; line-height: 1.5; }
         
-        /* FOOTER COPY */
-        .footer-copy { text-align: center; padding: 40px 20px; font-size: 11px; color: #333; letter-spacing: 0.5px; margin-top: 50px; }
+        .shop-card.lava { border-color: #ff4500; background: linear-gradient(145deg, #160a05, #0c0c14); }
+        .shop-card.lava h4 { color: #ff6a00; font-weight: 800; }
 
-        /* СКРЫТАЯ КАПЧА */
-        #bot-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; backdrop-filter: blur(20px); }
-        .dot { position: fixed; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; cursor: pointer; z-index: 10001; opacity: 0.6; box-shadow: 0 0 10px var(--accent); }
-        .dot:hover { opacity: 1; transform: scale(1.5); }
+        .buy-link-btn {
+            display: block;
+            text-align: center;
+            background: #1b1b2f;
+            padding: 12px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+            border: 1px solid #2d2d42;
+        }
+        .buy-link-btn:hover { background: #6b5fe6; border-color: #6b5fe6; box-shadow: 0 0 15px rgba(107, 95, 230, 0.4); }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); display: none; align-items: center; justify-content: center; z-index: 3000; }
-        .auth-box { background: var(--card); padding: 40px; border-radius: 30px; width: 360px; border: 1px solid #222; text-align: center; }
-        .auth-box input { width: 100%; padding: 14px; margin: 8px 0; background: #000; border: 1px solid #333; color: white; border-radius: 12px; outline: none; }
+        /* --- СЕКЦИЯ АВТОРИЗАЦИИ / РЕГИСТРАЦИИ --- */
+        #auth-page {
+            padding: 60px 40px;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-card {
+            background: #0c0c14;
+            border: 1px solid #1f1f33;
+            padding: 45px 40px;
+            width: 420px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .auth-card h3 { font-size: 26px; font-weight: 800; margin-bottom: 25px; }
+        .auth-form input {
+            width: 100%;
+            background: #11111c;
+            border: 1px solid #1f1f33;
+            padding: 14px 16px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+        .auth-form input:focus { border-color: #6b5fe6; outline: none; }
+        .auth-card p { font-size: 13px; color: #a0a0b0; margin-top: 20px; }
+        .auth-card p span { color: #6b5fe6; cursor: pointer; font-weight: 600; }
+
+        /* --- СЕКЦИЯ ЛИЧНОГО КАБИНЕТА --- */
+        #cabinet-page {
+            padding: 60px 40px;
+            align-items: center;
+        }
+        .cabinet-container {
+            width: 100%;
+            max-width: 900px;
+            background: #0c0c14;
+            border: 1px solid #1f1f33;
+            border-radius: 16px;
+            padding: 40px;
+        }
+        .cabinet-container h2 { font-size: 28px; font-weight: 800; margin-bottom: 20px; }
+        
+        .profile-box {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            border-bottom: 1px solid #1f1f33;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+        .avatar-wrapper { position: relative; width: 90px; height: 90px; cursor: pointer; }
+        .user-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid #6b5fe6;
+            background: #11111c;
+            object-fit: cover;
+        }
+        .avatar-wrapper:hover .user-avatar { filter: brightness(0.5); }
+        .user-info h3 { font-size: 22px; font-weight: 700; margin-bottom: 5px; }
+        
+        /* Роли юзеров */
+        .role-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 12px; text-transform: uppercase; margin-top: 5px; }
+        .role-user { background: #3a3a50; color: #a0a0b0; }
+        .role-premium { background: #6b5fe6; color: #fff; box-shadow: 0 0 10px rgba(107,95,230,0.5); }
+        .role-beta { background: linear-gradient(45deg, #ff4500, #ffaa00); color: #000; font-weight: 900; }
+
+        .activation-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: #11111c;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #1f1f33;
+        }
+
+        .client-actions {
+            display: flex;
+            gap: 20px;
+        }
+        .action-card {
+            background: #11111c;
+            border: 1px solid #1f1f33;
+            border-radius: 12px;
+            padding: 25px;
+            flex: 1;
+            text-align: center;
+        }
+        .action-card h5 { font-size: 16px; margin-bottom: 10px; font-weight: 700; }
+        .action-card p { font-size: 13px; color: #a0a0b0; margin-bottom: 20px; }
+
+        /* Заблокированные серые кнопки */
+        .btn-glow.disabled {
+            background: #1a1a26;
+            border: 1px solid #2d2d42;
+            color: #555566;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Подвал */
+        footer {
+            background: #040407;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 30px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #666678;
+            margin-top: auto;
+        }
+        .footer-links a { color: #666678; text-decoration: none; margin-left: 25px; transition: 0.3s; cursor: pointer; }
+        .footer-links a:hover { color: #a0a0b0; }
     </style>
 </head>
-<body id="main-body">
+<body>
 
-    <!-- КАПЧА -->
-    <div id="bot-overlay">
-        <h2 style="color:white; margin-bottom: 10px;">Проверка безопасности</h2>
-        <p style="color:#555;">Найдите и нажмите на 3 красные точки на экране, чтобы войти</p>
-        <p id="dot-count" style="color:var(--accent); font-weight:bold; margin-top: 20px;">Найдено: 0/3</p>
-    </div>
+    <!-- Шапка -->
+    <header>
+        <div class="logo" onclick="changePage('main')">SkyLine</div>
+        <nav>
+            <a id="nav-main" class="active" onclick="changePage('main')">Главная</a>
+            <a id="nav-shop" onclick="changePage('shop')">Магазин</a>
+            <button id="nav-cab-btn" class="nav-btn" onclick="handleCabinetNav()">Кабинет</button>
+        </nav>
+    </header>
 
-    <canvas id="effect-canvas"></canvas>
-
-    <div class="header">
-        <div class="logo-area" onclick="showPage('heroPage')"><img src="logo.png" class="logo-img"> SKYLINE</div>
-        <div class="nav-links">
-            <a onclick="showPage('heroPage')">Главная</a>
-            <a onclick="openAuth(); switchTab('shop')">Магазин</a>
-            <a onclick="showPage('termsPage')">Условия</a>
-            <a onclick="openAuth()">Кабинет</a>
-        </div>
-    </div>
-
-    <div id="heroPage" class="page active">
-        <div class="hero" id="main-hero">
-            <img src="logo.png" style="width:150px; margin-bottom:20px; filter: drop-shadow(0 0 20px var(--blue));">
-            <h1>SkyLine Client</h1>
-            <p style="color:#666;">Premium Software for Minecraft</p>
-            <div class="btn-group">
-                <button class="btn-main" onclick="tryDownload('std')">⬇ СКАЧАТЬ</button>
-                <button class="btn-beta" onclick="tryDownload('beta')">⭐ BETA</button>
+    <main>
+        <!-- 1. ГЛАВНАЯ СТРАНИЦА -->
+        <section id="main-page" class="page-section active">
+            <div class="hero-section">
+                <h1>SkyLine</h1>
+                <p>Ультимативный чит-клиент 1.16.5 для полной доминации в PvP. Обходи ReallyWorld, FunTime и HolyWorld без единого детекта.</p>
+                <button class="btn-glow" onclick="changePage('shop')">Начать доминацию</button>
             </div>
-        </div>
 
-        <div style="max-width:1100px; margin: 0 auto; padding: 100px 20px;">
-            <div class="card-grid">
-                <div class="product-card"><div class="snow-pile"></div><i>👁</i><h3>Визуалы</h3><p>Уникальные рендеры и плавная анимация.</p></div>
-                <div class="product-card"><div class="snow-pile"></div><i>🚀</i><h3>FPS</h3><p>Оптимизация под любое железо.</p></div>
-                <div class="product-card"><div class="snow-pile"></div><i>⚙</i><h3>Конфиги</h3><p>Настройка под любой стиль игры.</p></div>
+            <div class="features-section">
+                <h2>Наши технологии доминации</h2>
+                <div class="feat-grid">
+                    <div class="feat-box">
+                        <h4>Attack Aura Bypasses</h4>
+                        <p>Обходит жесткие проверки античитов на топ-серверах за счет динамической отправки легитных тиков пакетов перемещения.</p>
+                    </div>
+                    <div class="feat-box">
+                        <h4>HandPhysics System</h4>
+                        <p>Добавляет премиальную задержку, физический вес предметов и покачивание рук во время резких фликов мыши.</p>
+                    </div>
+                    <div class="feat-box">
+                        <h4>Momentum Crystal</h4>
+                        <p>Моментальный подрыв кристаллов Энда на обсидиане за 0 тиков. Абсолютное превосходство на любой HvH арене.</p>
+                    </div>
+                </div>
             </div>
-            <div class="footer-copy">© 2026 SkyLine DLC. Все права защищены. Не аффилирован с Mojang Studios.</div>
-        </div>
-    </div>
+        </section>
 
-    <!-- МАГАЗИН В КАБИНЕТЕ -->
-    <div id="cabinetPage" class="page">
-        <div class="layout">
-            <div class="sidebar">
-                <div class="nav-item active" id="btn-profile" onclick="switchTab('profile')">👤 Профиль</div>
-                <div class="nav-item" id="btn-shop" onclick="switchTab('shop')">🛒 Магазин</div>
-                <div class="nav-item" id="btn-settings" onclick="switchTab('settings')">✨ Атмосфера</div>
-                <div class="nav-item" onclick="location.reload()">🏠 Выйти</div>
+        <!-- 2. СЕКЦИЯ МАГАЗИНА (Твои ссылки на Lava.top) -->
+        <section id="shop-page" class="page-section">
+            <h2>Доступные подписки</h2>
+            <div class="shop-grid">
+                <div class="shop-card">
+                    <h4>30 Дней</h4>
+                    <div class="price">300₽</div>
+                    <div class="desc">Полный доступ ко всем функциям чита, обходам античитов на один месяц. Тест-ключ: <b style="color:#6b5fe6">SK-30D</b></div>
+                    <a href="https://app.lava.top/products/d4198604-66ac-48e6-b8de-3a56638e6eb8" target="_blank" class="buy-link-btn">Купить подписку</a>
+                </div>
+                <div class="shop-card">
+                    <h4>1 Год</h4>
+                    <div class="price">500₽</div>
+                    <div class="desc">Доступ к приватным обновлениям на 12 месяцев. Ключ для теста: <b style="color:#6b5fe6">SK-1GOD</b></div>
+                    <a href="https://app.lava.top/products/ee59600b-71bf-4c68-b408-9817ba64b734" target="_blank" class="buy-link-btn">Купить подписку</a>
+                </div>
+                <div class="shop-card" style="border-color: #6b5fe6;">
+                    <h4>Lifetime</h4>
+                    <div class="price">600₽</div>
+                    <div class="desc">Пожизненный доступ к софту навсегда. Тест-ключ: <b style="color:#6b5fe6">SK-LIFE</b></div>
+                    <a href="https://app.lava.top/products/fb8b7a92-47ab-4c0e-afab-8b0c71adf617" target="_blank" class="buy-link-btn" style="background: #6b5fe6; border-color: #6b5fe6;">Забрать навсегда</a>
+                </div>
+                <div class="shop-card lava">
+                    <h4>Beta Access</h4>
+                    <div class="price">1000₽</div>
+                    <div class="desc">Ранний доступ к закрытым бета-тестам до официального релиза. Тест-ключ: <b style="color:#ff6a00">SK-BETA</b></div>
+                    <a href="https://app.lava.top/products/56991bb4-28ec-41a2-8cdf-e86359be6f64" target="_blank" class="buy-link-btn" style="background: linear-gradient(45deg, #ff4500, #ffaa00); color: #000; border: none;">Получить Бету</a>
+                </div>
             </div>
-            <div class="content">
-                <div id="profileTab">
-                    <h1>Профиль</h1>
-                    <div style="background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid #222; display: flex; align-items: center; gap: 20px;">
-                        <div id="userAvatar" style="width:80px; height:80px; background:url('logo.png') center/cover; border:2px solid var(--blue); border-radius:20px; cursor:pointer;" onclick="document.getElementById('avatarInput').click()"></div>
-                        <input type="file" id="avatarInput" style="display:none;" onchange="loadAvatar(event)">
-                        <div><h2 id="displayNick">User</h2><p id="subTxt" style="color:red; font-weight:bold;">НЕТ ЛИЦЕНЗИИ</p></div>
+        </section>
+
+        <!-- 3. ОКНО РЕГИСТРАЦИИ И ВХОДА (По умолчанию стоит РЕГИСТРАЦИЯ) -->
+        <section id="auth-page" class="page-section">
+            <div class="auth-card">
+                <h3 id="auth-title">Регистрация аккаунта</h3>
+                <div class="auth-form">
+                    <input type="text" id="auth-user" placeholder="Придумайте логин" required>
+                    <input type="password" id="auth-pass" placeholder="Придумайте пароль" required>
+                    <button class="btn-glow" style="width: 100%; margin-top:10px;" id="auth-btn" onclick="handleAuth()">Зарегистрироваться</button>
+                </div>
+                <p id="auth-toggle">Уже есть аккаунт? <span onclick="toggleAuthMode()">Войти</span></p>
+            </div>
+        </section>
+
+        <!-- 4. ЛИЧНЫЙ КАБИНЕТ (По дефолту заблокирован, открывается по ключам) -->
+        <section id="cabinet-page" class="page-section">
+            <div class="cabinet-container">
+                <h2>Ваш личный профиль</h2>
+                <div class="profile-box">
+                    <div class="avatar-wrapper" onclick="document.getElementById('file-input').click()">
+                        <img id="user-avatar" class="user-avatar" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2311111c'/><circle cx='50' cy='35' r='20' fill='%233a3a50'/><path d='M20 85 C20 60, 80 60, 80 85 Z' fill='%233a3a50'/></svg>" alt="Аватар">
+                    </div>
+                    <input type="file" id="file-input" style="display:none;" accept="image/*" onchange="loadAvatar(this)">
+                    <div class="user-info">
+                        <h3 id="profile-username">User</h3>
+                        <span id="role-badge" class="role-badge role-user">User (Default)</span>
                     </div>
                 </div>
 
-                <div id="shopTab" style="display:none;">
-                    <h1>Магазин</h1>
-                    <div class="card-grid">
-                        <div class="product-card"><div class="snow-pile"></div><h3>BETA</h3><div class="price-text">900 ₽ </div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/56991bb4-28ec-41a2-8cdf-e86359be6f64')">КУПИТЬ</button></div>
-                        <div class="product-card"><div class="snow-pile"></div><h3>LIFETIME</h3><div class="price-text">500 ₽ </div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/fb8b7a92-47ab-4c0e-afab-8b0c71adf617')">КУПИТЬ</button></div>
-                        <div class="product-card"><div class="snow-pile"></div><h3>1 ГОД</h3><div class="price-text">300 ₽ </div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/ee59600b-71bf-4c68-b408-9817ba64b734')">КУПИТЬ</button></div>
-                        <div class="product-card"><div class="snow-pile"></div><h3>30 ДНЕЙ</h3><div class="price-text">100 ₽ </div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/d4198604-66ac-48e6-b8de-3a56638e6eb8')">КУПИТЬ</button></div>
-                        <div class="product-card" style="border-color:var(--gold)"><div class="snow-pile"></div><h3>CFG Specialist</h3><div class="price-text" style="color:var(--gold)">150 Р</div><button class="buy-btn" onclick="window.open('https://app.lava.top/products/07ba109a-054a-43d0-b13b-04214a052a2f')">КУПИТЬ</button></div>
+                <!-- Блок Активации Ключей -->
+                <div class="activation-box">
+                    <input type="text" id="license-key" class="input-field" placeholder="Вставьте ваш секретный ключ лицензии Lava.top" style="background:#11111c; border:1px solid #1f1f33; padding:12px; border-radius:8px; color:white; flex-grow:1; font-size:14px; outline:none;">
+                    <button class="action-btn" style="background:#6b5fe6; color:white; border:none; padding:12px 24px; border-radius:8px; font-weight:600; cursor:pointer;" onclick="activateLicense()">Активировать</button>
+                </div>
+
+                <div class="client-actions">
+                    <div class="action-card">
+                        <h5>Загрузка Loader</h5>
+                        <p>Скачайте официальный запускатор SkyLine со всеми привязками HWID.</p>
+                        <button id="btn-dl-loader" class="btn-glow disabled" onclick="downloadFile('loader')">Скачать лоадер</button>
+                    </div>
+                    <div class="action-card" style="border-color: #ff4500;">
+                        <h5 style="color: #ff6a00;">Бета-Клиент</h5>
+                        <p>Доступ к закрытой тестовой ветке софта 1.16.5 для обладателей Beta Access.</p>
+                        <button id="btn-dl-beta" class="btn-glow disabled" style="background: #1a1a26; color: #555566;" onclick="downloadFile('beta')">Скачать Бету</button>
                     </div>
                 </div>
-
-                <div id="settingsTab" style="display:none;">
-                    <h1>Темы</h1>
-                    <button class="btn-main" style="width:200px;" onclick="setEffect('none')">Off</button>
-                    <button class="btn-main" style="width:200px;" onclick="setEffect('rain')">🌧 Rain</button>
-                    <button class="btn-main" style="width:200px;" onclick="setEffect('snow')">❄ Snow</button>
-                </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <!-- ВХОД -->
-    <div class="modal" id="authModal">
-        <div class="auth-box">
-            <h2 id="authTitle">Вход</h2>
-            <div id="regOnly" style="display:none;"><input type="email" id="uEmail" placeholder="Email"></div>
-            <input type="text" id="uNick" placeholder="Никнейм">
-            <input type="password" id="uPass" placeholder="Пароль">
-            <button class="btn-main" style="width:100%; margin-top:15px;" onclick="handleAuth()">ПРОДОЛЖИТЬ</button>
-            <p onclick="toggleAuth()" id="toggleText" style="font-size:12px; color:#555; margin-top:15px; cursor:pointer;">Регистрация</p>
+    <!-- Подвал -->
+    <footer>
+        <div>&copy; 2026 SkyLine Software. Все права защищены.</div>
+        <div class="footer-links">
+            <a onclick="alert('Политика конфиденциальности: Сбор HWID производится исключительно для защиты софта от сливов.')">Политика конфиденциальности</a>
+            <a onclick="alert('Условия использования: Покупая подписку, вы соглашаетесь, что софт предоставляется как есть.')">Условия использования</a>
         </div>
-    </div>
+    </footer>
 
     <script>
-        let dotsFound = 0, isRegMode = false, hasBeta = false, hasStd = false, currentEffect = 'none';
-        const canvas = document.getElementById('effect-canvas'), ctx = canvas.getContext('2d');
-        let particles = [];
+        let isUserLoggedIn = false;
+        let isUserRegistered = false;
+        let uName = "";
+        let uPass = "";
+        let uRole = "user"; // user, premium, beta
+        let isAuthLoginMode = false; // Изначально Регистрация
 
-        // ИНИЦИАЛИЗАЦИЯ КАПЧИ
-        function initCaptcha() {
-            if (Math.random() > 0.7) { // Шанс 30%
-                document.getElementById('bot-overlay').style.display = 'flex';
-                for(let i=0; i<3; i++) {
-                    let dot = document.createElement('div');
-                    dot.className = 'dot';
-                    dot.style.top = Math.random() * 80 + 10 + '%';
-                    dot.style.left = Math.random() * 80 + 10 + '%';
-                    dot.onclick = function() {
-                        this.remove();
-                        dotsFound++;
-                        document.getElementById('dot-count').innerText = `Найдено: ${dotsFound}/3`;
-                        if(dotsFound === 3) {
-                            document.getElementById('bot-overlay').style.display = 'none';
-                        }
-                    };
-                    document.body.appendChild(dot);
+        function changePage(pageName) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('header nav a').forEach(l => l.classList.remove('active'));
+
+            if (pageName === 'main') {
+                document.getElementById('main-page').classList.add('active');
+                document.getElementById('nav-main').classList.add('active');
+            } else if (pageName === 'shop') {
+                document.getElementById('shop-page').classList.add('active');
+                document.getElementById('nav-shop').classList.add('active');
+            } else if (pageName === 'auth') {
+                document.getElementById('auth-page').classList.add('active');
+            } else if (pageName === 'cabinet') {
+                document.getElementById('cabinet-page').classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        // Клик по кнопке Кабинет в шапке
+        function handleCabinetNav() {
+            if (isUserLoggedIn) {
+                changePage('cabinet');
+            } else {
+                changePage('auth');
+            }
+        }
+
+        function toggleAuthMode() {
+            isAuthLoginMode = !isAuthLoginMode;
+            document.getElementById('auth-title').innerText = isAuthLoginMode ? "Вход в систему" : "Регистрация аккаунта";
+            document.getElementById('auth-btn').innerText = isAuthLoginMode ? "Войти" : "Зарегистрироваться";
+            document.getElementById('auth-toggle').innerHTML = isAuthLoginMode ? 
+                "Впервые тут? <span onclick='toggleAuthMode()'>Создать аккаунт</span>" : 
+                "Уже есть аккаунт? <span onclick='toggleAuthMode()'>Войти</span>";
+        }
+
+        // РЕГИСТРАЦИЯ И СРАЗУ АВТО-ВХОД
+        function handleAuth() {
+            const user = document.getElementById('auth-user').value.trim();
+            const pass = document.getElementById('auth-pass').value.trim();
+
+            if (!user || !pass) {
+                alert("Заполните все поля!");
+                return;
+            }
+
+            if (!isAuthLoginMode) {
+                // Регистрация + Автоматический вход
+                uName = user;
+                uPass = pass;
+                isUserRegistered = true;
+                isUserLoggedIn = true;
+
+                document.getElementById('profile-username').innerText = uName;
+                document.getElementById('nav-cab-btn').innerText = "Профиль";
+                
+                alert("Вы успешно зарегистрированы и вошли в систему! Перенаправляем на Главную.");
+                changePage('main');
+            } else {
+                // Вход
+                if (isUserRegistered && user === uName && pass === uPass) {
+                    isUserLoggedIn = true;
+                    document.getElementById('profile-username').innerText = uName;
+                    document.getElementById('nav-cab-btn').innerText = "Профиль";
+                    changePage('main');
+                } else {
+                    alert("Неверный логин или пароль!");
                 }
             }
         }
 
-        function toggleAuth() {
-            isRegMode = !isRegMode;
-            document.getElementById('authTitle').innerText = isRegMode ? "Регистрация" : "Вход";
-            document.getElementById('regOnly').style.display = isRegMode ? "block" : "none";
-            document.getElementById('toggleText').innerText = isRegMode ? "Вход" : "Регистрация";
-        }
-
-        function handleAuth() {
-            const n = document.getElementById('uNick').value, p = document.getElementById('uPass').value;
-            if(!n || !p) return alert("Заполни поля!");
-            if(isRegMode) {
-                localStorage.setItem('user_'+n, p);
-                alert("Аккаунт создан!"); toggleAuth();
-            } else {
-                if(localStorage.getItem('user_'+n) === p) {
-                    document.getElementById('displayNick').innerText = n;
-                    document.getElementById('authModal').style.display = 'none';
-                    showPage('cabinetPage');
-                } else alert("Ошибка!");
+        // Загрузка аватарки из галереи компьютера
+        function loadAvatar(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('user-avatar').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function loadAvatar(e) { const f = e.target.files[0]; if(f) { const r = new FileReader(); r.onload = (ev) => { localStorage.setItem('av', ev.target.result); document.getElementById('userAvatar').style.backgroundImage = `url('${ev.target.result}')`; }; r.readAsDataURL(f); } }
-        
-        function setEffect(t) {
-            currentEffect = t; document.body.className = t==='rain'?'rain-mode':'';
-            document.getElementById('main-hero').style.backgroundImage = t==='rain'?"url('rain-bg.jpg')":(t==='snow'?"url('snow-bg.jpg')":"none");
-            particles = []; if(t==='none') return;
-            let c = t==='rain'?80:200;
-            for(let i=0; i<c; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, v: t==='rain'?15:1.5+Math.random()*2, s: t==='rain'?1.5:4+Math.random()*5 });
-        }
-
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            if(currentEffect !== 'none') {
-                ctx.fillStyle = currentEffect==='rain'?'rgba(0, 225, 255, 0.6)':'#fff';
-                particles.forEach(p => {
-                    ctx.beginPath();
-                    if(currentEffect==='rain') ctx.rect(p.x, p.y, 2, 25); else ctx.arc(p.x, p.y, p.s, 0, Math.PI*2);
-                    ctx.fill();
-                    p.y += p.v; if(p.y > canvas.height) { p.y = -30; p.x = Math.random()*canvas.width; }
-                });
+        // Особая система секретных ключей
+        function activateLicense() {
+            const key = document.getElementById('license-key').value.trim();
+            const badge = document.getElementById('role-badge');
+            
+            if (key === "SK-30D" || key === "SK-1GOD" || key === "SK-LIFE") {
+                uRole = "premium";
+                badge.className = "role-badge role-premium";
+                badge.innerText = "Premium User";
+                
+                // Открываем только лоадер
+                document.getElementById('btn-dl-loader').classList.remove('disabled');
+                document.getElementById('btn-dl-beta').classList.add('disabled');
+                document.getElementById('btn-dl-beta').style.background = "#1a1a26";
+                document.getElementById('btn-dl-beta').style.color = "#555566";
+                alert("Лицензия Premium успешно активирована! Скачивание лоадера открыто! 💎");
+            } 
+            else if (key === "SK-BETA") {
+                uRole = "beta";
+                badge.className = "role-badge role-beta";
+                badge.innerText = "Beta Tester";
+                
+                // Открываем абсолютно всё
+                document.getElementById('btn-dl-loader').classList.remove('disabled');
+                document.getElementById('btn-dl-beta').classList.remove('disabled');
+                document.getElementById('btn-dl-beta').style.background = "linear-gradient(45deg, #ff4500, #ff8800)";
+                document.getElementById('btn-dl-beta').style.color = "#000";
+                alert("Уровень Beta Access активирован! Все загрузки разблокированы! 🔥");
+            } 
+            else {
+                alert("Такого ключа в базе данных Lava.top не существует!");
             }
-            requestAnimationFrame(draw);
+            document.getElementById('license-key').value = "";
         }
 
-        function tryDownload(t) { alert("Нужна лицензия!"); showPage('cabinetPage'); switchTab('shop'); }
-        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
-        function openAuth() { document.getElementById('authModal').style.display = 'flex'; }
-        function switchTab(t) { ['profileTab','shopTab','settingsTab'].forEach(id => document.getElementById(id).style.display = 'none'); document.getElementById(t+'Tab').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); document.getElementById('btn-'+t).classList.add('active'); }
-        
-        window.onload = () => { 
-            initCaptcha(); 
-            if(localStorage.getItem('av')) document.getElementById('userAvatar').style.backgroundImage = `url('${localStorage.getItem('av')}')`; 
-        };
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight; draw();
+        function downloadFile(type) {
+            if (type === 'loader' && (uRole === 'premium' || uRole === 'beta')) {
+                alert("Загрузка: SkyLine_Loader.exe успешно скачивается!");
+            } else if (type === 'beta' && uRole === 'beta') {
+                alert("Загрузка: SkyLine_Beta_1.16.5.jar успешно скачивается!");
+            }
+        }
     </script>
 </body>
 </html>
-
